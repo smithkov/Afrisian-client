@@ -1,0 +1,183 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-6">
+      <div *ngIf="msg.show" class="{{ msg.decorator }}" role="alert">
+        {{ msg.message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="shopForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="card">
+          <div class="card-header">
+            <strong>Shop Name</strong>
+            <small>Form</small>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="shopName">Shop name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="Enter your shop name"
+                formControlName="shopName"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  shopForm.controls['shopName'].invalid &&
+                  (shopForm.controls['shopName'].dirty ||
+                    shopForm.controls['shopName'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="shopForm.controls['shopName'].errors.required">
+                  Shop Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4">Shop Type</label>
+              <select class="form-control" formControlName="shopType">
+                <option
+                  *ngFor="let s of shopType; let i = index"
+                  [value]="shopType[i].id"
+                >
+                  {{ shopType[i].name }}
+                </option>
+              </select>
+            </div>
+            <!-- <div class="form-group">
+              <label class="col-md-4">City</label>
+              <select class="form-control" formControlName="city" id="city">
+                <option
+                  *ngFor="let c of city; let i = index"
+                  [value]="city[i].id"
+                >
+                  {{ city[i].name }}
+                </option>
+              </select>
+            </div> -->
+            <div class="form-group">
+              <label for="vat">Phone</label>
+              <input
+                type="text"
+                class="form-control"
+                id="vat"
+                placeholder="phone"
+                formControlName="phone"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  shopForm.controls['phone'].invalid &&
+                  (shopForm.controls['phone'].dirty ||
+                    shopForm.controls['phone'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="shopForm.controls['phone'].errors.required">
+                  Phone is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="street">Address</label>
+              <input
+                type="text"
+                class="form-control"
+                id="street"
+                placeholder="Enter street name"
+                formControlName="address"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  shopForm.controls['address'].invalid &&
+                  (shopForm.controls['address'].dirty ||
+                    shopForm.controls['address'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="shopForm.controls['address'].errors.required">
+                  Address is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="file-input"
+                >Logo</label
+              >
+              <div class="col-md-9">
+                <input
+                  type="file"
+                  (change)="onFileSelected($event)"
+                  id="file-input"
+                  name="file-input"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <label for="city">City</label>
+                <select class="form-control" formControlName="city" id="city">
+                  <option
+                    *ngFor="let c of city; let i = index"
+                    [value]="city[i].id"
+                  >
+                    {{ city[i].name }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="postal-code">Postal Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="postal-code"
+                  placeholder="Postal Code"
+                  formControlName="postCode"
+                />
+                <hr />
+                <div
+                  *ngIf="
+                    shopForm.controls['postCode'].invalid &&
+                    (shopForm.controls['postCode'].dirty ||
+                      shopForm.controls['postCode'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="shopForm.controls['address'].errors.required">
+                    Post code is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--/.row-->
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+              Submit
+            </button>
+            <button type="reset" class="btn btn-sm btn-danger">
+              <i class="fa fa-ban"></i> Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
