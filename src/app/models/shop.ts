@@ -1,4 +1,5 @@
-export interface Shop {
+export class Shop {
+  id: any;
   name: String;
   postCode: String;
   phone: String;

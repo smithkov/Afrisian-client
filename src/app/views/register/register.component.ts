@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit {
       .register(this.registerForm.value)
       .pipe(first())
       .subscribe(
-        data => {
+        (data: any) => {
           this.loading = false;
           if (data.error) {
             //this.msg.getWarning(data.msg);
