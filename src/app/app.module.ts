@@ -10,7 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JwtInterceptor, ErrorInterceptor } from "./_helper";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { StoreModule } from "@ngrx/store";
-import { reducer, metaReducers } from "./reducer";
+import { reducer } from "./reducer/shop.reducer";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -47,7 +47,6 @@ import { ChartsModule } from "ng2-charts";
 @NgModule({
   imports: [
     BrowserModule,
-    StoreModule.forRoot(reducer, { metaReducers }),
     BrowserAnimationsModule,
     AppRoutingModule,
     AppAsideModule,
@@ -61,6 +60,9 @@ import { ChartsModule } from "ng2-charts";
     ChartsModule,
     ReactiveFormsModule,
     FormsModule,
+    StoreModule.forRoot({
+      shop: reducer
+    }),
     HttpClientModule
   ],
   declarations: [

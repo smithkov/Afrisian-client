@@ -51,14 +51,13 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          console.log(data);
           this.loading = false;
           if (!data.auth) {
-            console.log(data.msg);
-            // this.alertService.error(data.msg);
           }
-          this.authenticationService.currentUser.subscribe(data => {
-            console.log(data);
+          this.authenticationService.currentUser.subscribe((data: any) => {
+            console.log("first");
+            console.log(data.shop);
+            console.log("end");
             this.router.navigate([this.returnUrl]);
           });
         },

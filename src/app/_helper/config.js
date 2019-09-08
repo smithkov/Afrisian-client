@@ -9,5 +9,9 @@ module.exports = {
   getImage: image => {
     let img = "http://localhost:3000/uploads/";
     return `${img}${image}`;
+  },
+  getImageItem: image => {
+    let img = "http://localhost:3000/Images/";
+    return `${img}${image}`;
   }
 };

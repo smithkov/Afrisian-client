@@ -1,4 +1,4 @@
-export default class Item {
+export class Item {
   shopName: String;
   price: String;
   weight: String;

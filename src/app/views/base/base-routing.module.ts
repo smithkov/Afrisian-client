@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { CardsComponent } from "./cards.component";
 import { FormsComponent } from "./forms.component";
 import { ShopComponent } from "./shop.component";
+import { ProductComponent } from "./product.component";
 import { SwitchesComponent } from "./switches.component";
 import { TablesComponent } from "./tables.component";
 import { TabsComponent } from "./tabs.component";
@@ -44,6 +45,13 @@ const routes: Routes = [
         component: ShopComponent,
         data: {
           title: "Shop"
+        }
+      },
+      {
+        path: "product",
+        component: ProductComponent,
+        data: {
+          title: "product"
         }
       },
       {

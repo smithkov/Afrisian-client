@@ -1,7 +1,5 @@
-import { Shop } from "./models/shop";
-import { User } from "./models/user";
+import { Shops } from "./models/shops";
 
 export interface AppState {
-  readonly shop: Shop;
-  readonly User: User;
+  readonly shop: Shops[];
 }

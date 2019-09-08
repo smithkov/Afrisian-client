@@ -4,15 +4,11 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 var config = require("../_helper/config");
 import { Store } from "@ngrx/store";
-import { AppState } from "../app.state";
 import { User } from "../models/user";
-import { Shop } from "../models/shop";
-import * as fromRoot from "../reducer";
-import * as fromShops from "../reducer/shop.reducer";
-import * as fromUsers from "../reducer/user.reducer";
+import { AppState } from "./../app.state";
 import * as ShopActions from "../actions/shop.action";
-import * as UserActions from "../actions/user.action";
-import * as AppActions from "../actions/user.action";
+import { Shop } from "../models/shop";
+import { Shops } from "../models/shops";
 
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {
@@ -37,10 +33,8 @@ export class AuthenticationService {
       .pipe(
         map(user => {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem("currentUser", JSON.stringify(user));
-          this.addUser(user.user);
-          this.addShop(user.shop);
-          this.currentUserSubject.next(user);
+          localStorage.setItem("currentUser", JSON.stringify(user.user));
+          this.currentUserSubject.next(user.user);
           return user;
         })
       );
@@ -50,10 +44,11 @@ export class AuthenticationService {
     return this.http.post<any>(`${this.url}/register`, user).pipe(
       map(userData => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.addUser(userData.user);
-        return user;
+        console.log(userData.user);
+        localStorage.setItem("currentUser", JSON.stringify(userData.user));
+
+        this.currentUserSubject.next(userData.user);
+        return userData;
       })
     );
   }
@@ -64,11 +59,4 @@ export class AuthenticationService {
     this.currentUserSubject.next(null);
   }
   //this is a method that pulls shop data from the store.
-
-  addUser(newUser: User) {
-    return this.store.dispatch(new UserActions.CreateUser(newUser));
-  }
-  addShop(newShop: Shop) {
-    return this.store.dispatch(new ShopActions.CreateShop(newShop));
-  }
 }

@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 var config = require("../_helper/config");
 
 import { User } from "../models/user";
+import { Shop } from "../models/shop";
 
 @Injectable({ providedIn: "root" })
 export class MainService {
@@ -12,11 +13,19 @@ export class MainService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
+  private currentShopSubject: BehaviorSubject<Shop>;
+  public currentShop: Observable<Shop>;
+
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem("currentUser"))
     );
     this.currentUser = this.currentUserSubject.asObservable();
+
+    this.currentShopSubject = new BehaviorSubject<Shop>(
+      JSON.parse(localStorage.getItem("currentShop"))
+    );
+    this.currentShop = this.currentShopSubject.asObservable();
   }
 
   public get currentUserValue(): User {
@@ -37,8 +46,54 @@ export class MainService {
       })
     );
   }
+
+  addProduct(fd) {
+    return this.http.post<any>(`${this.url}/item/upload`, fd).pipe(
+      map(product => {
+        return product;
+      })
+    );
+  }
+
+  shopByUser(userId: any) {
+    return this.http
+      .post<any>(`${this.url}/shop/getByUser`, { userId: userId })
+      .pipe(
+        map((shop: any) => {
+          let data = shop.data;
+          localStorage.setItem("currentShop", JSON.stringify(data));
+          this.currentShopSubject.next(data);
+          return data;
+        })
+      );
+  }
   getCity() {
     return this.http.get(`${this.url}/city`);
+  }
+  getCategory() {
+    return this.http.get(`${this.url}/category/list`).pipe(
+      map((category: any) => {
+        return category.data;
+      })
+    );
+  }
+
+  getProductsByShop(shopId: any) {
+    return this.http
+      .post(`${this.url}/item/itemsByShop`, { shopId: shopId })
+      .pipe(
+        map((items: any) => {
+          return items;
+        })
+      );
+  }
+
+  deleteItem(id: any) {
+    return this.http.post(`${this.url}/item/delete`, { itemId: id }).pipe(
+      map((result: any) => {
+        return result.error;
+      })
+    );
   }
   getShopType() {
     return this.http.get(`${this.url}/shopType`);

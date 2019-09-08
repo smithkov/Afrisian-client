@@ -3,16 +3,11 @@ import { DOCUMENT } from "@angular/common";
 import { navItems } from "../../_nav";
 import { Observable } from "rxjs/Observable";
 import { User } from "../../models/user";
-import * as fromRoot from "../../reducer";
-import * as fromUser from "../../reducer/user.reducer";
-import * as fromShops from "../../reducer/shop.reducer";
-import * as ShopActions from "../../actions/shop.action";
-import * as UserActions from "../../actions/user.action";
-import * as AppActions from "../../actions/user.action";
-import { Store } from "@ngrx/store";
 import { Shop } from "../../models/shop";
-import { AppState } from "./../../app.state";
 var image = require("../../_helper/config");
+import { MainService } from "../../_services/main.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "../../app.state";
 
 @Component({
   selector: "app-dashboard",
@@ -26,11 +21,14 @@ export class DefaultLayoutComponent implements OnDestroy {
   shop: Observable<Shop>;
   shopName: any;
   logo: any;
+  shops: Observable<Shop[]>;
   constructor(
+    private mainService: MainService,
     private store: Store<AppState>,
     @Inject(DOCUMENT) _document?: any
   ) {
-    this.store.dispatch(new ShopActions.FetchShop());
+    store.select("shop").subscribe(a => {});
+
     this.changes = new MutationObserver(mutations => {
       this.sidebarMinimized = _document.body.classList.contains(
         "sidebar-minimized"
@@ -43,28 +41,21 @@ export class DefaultLayoutComponent implements OnDestroy {
     });
 
     //this is basically loading shop data from the store
-
-    this.getShop().subscribe(data => {
-      console.log("before object");
-      console.log(data);
-      let img = image.getImage(data[0].logo);
-
-      this.logo = data[0] ? img : null;
-      this.shopName = data[0] ? data[0]["name"] : null;
+    this.mainService.currentUser.subscribe((data: any) => {
+      this.mainService.shopByUser(data.id).subscribe(shop => {
+        if (shop) {
+          this.shopName = shop.name;
+          this.logo = image.getImage(shop.logo);
+        } else {
+          this.shopName = "Default Name";
+          this.logo = "assets/images/grocer.png";
+        }
+      });
     });
   }
-  //this is a method that pulls shop data from the store.
-  getShop(): Observable<Shop[]> {
-    return this.store.select(fromShops.getShops);
-  }
 
-  addShop(newShop: Shop) {
-    return this.store.dispatch(new ShopActions.CreateShop(newShop));
-  }
+  // addShop(newShop: Shop) {
 
-  getUser(): Observable<User[]> {
-    return this.store.select(fromUser.getUsers);
-  }
   ngOnDestroy(): void {
     this.changes.disconnect();
   }

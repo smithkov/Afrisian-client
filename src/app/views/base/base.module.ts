@@ -11,6 +11,9 @@ import { FormsComponent } from "./forms.component";
 // Shop Component
 import { ShopComponent } from "./shop.component";
 
+// Product Component
+import { ProductComponent } from "./product.component";
+
 import { SwitchesComponent } from "./switches.component";
 import { TablesComponent } from "./tables.component";
 
@@ -48,6 +51,8 @@ import { TooltipsComponent } from "./tooltips.component";
 // Components Routing
 import { BaseRoutingModule } from "./base-routing.module";
 
+import { ModalModule } from "ngx-bootstrap/modal";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -61,12 +66,14 @@ import { BaseRoutingModule } from "./base-routing.module";
     PaginationModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ],
   declarations: [
     CardsComponent,
     FormsComponent,
     ShopComponent,
+    ProductComponent,
     SwitchesComponent,
     TablesComponent,
     TabsComponent,

@@ -83,7 +83,7 @@ export class RegisterComponent implements OnInit {
           }
 
           //this.alertService.success("Registration successful", true);
-          else this.router.navigate(["/dashboard"]);
+          else this.router.navigate(["/base/shop"]);
         },
         error => {
           this.loading = false;

@@ -1,0 +1,258 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-6">
+      <div *ngIf="msg.show" class="{{ msg.decorator }}" role="alert">
+        {{ msg.message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="card">
+          <div class="card-header">
+            <strong>Product Entry</strong>
+            <small>Form</small>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="name">Product name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="Enter your product name"
+                formControlName="name"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['name'].invalid &&
+                  (productForm.controls['name'].dirty ||
+                    productForm.controls['name'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="productForm.controls['name'].errors.required">
+                  Product Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4">Category</label>
+              <select class="form-control" formControlName="category">
+                <option
+                  *ngFor="let c of category; let i = index"
+                  [value]="category[i].id"
+                >
+                  {{ category[i].name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <label for="street">Weight</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="weight"
+                  placeholder="Enter product weight"
+                  formControlName="weight"
+                />
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['weight'].invalid &&
+                    (productForm.controls['weight'].dirty ||
+                      productForm.controls['weight'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="productForm.controls['weight'].errors.required">
+                    Weight is required.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="vat">Price</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="vat"
+                  placeholder="price"
+                  formControlName="price"
+                />
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['price'].invalid &&
+                    (productForm.controls['price'].dirty ||
+                      productForm.controls['price'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="productForm.controls['price'].errors.required">
+                    Price is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="definition">Definition</label>
+              <input
+                type="text"
+                class="form-control"
+                id="definition"
+                placeholder="Enter definition"
+                formControlName="definition"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['definition'].invalid &&
+                  (productForm.controls['definition'].dirty ||
+                    productForm.controls['definition'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="productForm.controls['definition'].errors.required">
+                  Defintion is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="file-input"
+                >Images</label
+              >
+              <div class="col-md-9">
+                <input
+                  type="file"
+                  (change)="onSelectFile($event)"
+                  id="file-input"
+                  name="file-input"
+                />
+              </div>
+            </div>
+            <img
+              class="img-thumbnail"
+              style="height:100px; width:100px"
+              *ngFor="let url of urls"
+              [src]="url"
+              height="200"
+            />
+            <!--/.row-->
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+              Submit
+            </button>
+            <button type="reset" class="btn btn-sm btn-danger">
+              <i class="fa fa-ban"></i> Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Product List
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th></th>
+                <th>Detail</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loadingTable">
+                <td>
+                  <span class="spinner-border spinner-border-sm mr-1"></span>
+                </td>
+              </tr>
+              <tr *ngFor="let item of products">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.weight }}</td>
+                <td>
+                  <img
+                    style="height: 60px; width:60px"
+                    class="img-thumbnail"
+                    src="{{ item.defaultImg }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-pill btn-sm btn-primary"
+                    data-toggle="modal"
+                    (click)="smallModal.show()"
+                  >
+                    Details
+                  </button>
+                </td>
+                <td>
+                  <button
+                    (click)="openModal(template, item.id)"
+                    class="btn btn-pill btn-sm btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.row-->
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      Delete <strong>{{ product[0].name }}</strong
+      >?
+    </h4>
+  </div>
+  <div class="modal-body text-center">
+    <p>
+      Are you sure you want to delete <strong>{{ product[0].name }}</strong
+      >?
+    </p>
+
+    <img
+      style="width:80px; height:80px"
+      class="img-thumbnail"
+      src="{{ product[0].defaultImg }}"
+    />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="decline()">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirm(product[0].id)">
+        <span
+        *ngIf="loadingDelete"
+        class="spinner-border spinner-border-sm mr-1"
+      ></span> Yes Delete
+    </button>
+  </div>
+</ng-template>

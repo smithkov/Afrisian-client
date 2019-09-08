@@ -4,16 +4,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 var msgObject = require("../../_helper/alertBase");
 import { Observable } from "rxjs/Observable";
-import { Store } from "@ngrx/store";
 import { Shop } from "../../models/shop";
-import { AppState } from "./../../app.state";
-import { User } from "../../models/user";
-import * as fromRoot from "../../reducer";
-import * as fromUser from "../../reducer/user.reducer";
-import * as ShopActions from "../../actions/shop.action";
-import * as AppActions from "../../actions/user.action";
-import { userInfo } from "os";
-import { identity } from "rxjs";
 
 @Component({
   templateUrl: "shop.component.html"
@@ -31,31 +22,11 @@ export class ShopComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private mainService: MainService,
-    private router: Router,
-    private store: Store<AppState>
+    private router: Router
   ) {
     this.msg = msgObject.default;
-
-    var shop = new Shop();
-    shop.name = "Mama Iyabo";
-    shop.id = 30;
-    shop.phone = "949404004";
-    //this.store.dispatch(new AppActions.AddUser(user));
-    this.addShop(shop);
-    // this.getShops().subscribe(data => {
-    //   console.log(data);
-    // });
-  }
-  // getShops(): Observable<Shop[]> {
-  //   return this.store.select(fromUser.getUsers);
-  // }
-  addShop(newShop: Shop) {
-    return this.store.dispatch(new ShopActions.CreateShop(newShop));
   }
 
-  updateShop(shop: Shop) {
-    return this.store.dispatch(new ShopActions.UpdateShop(shop));
-  }
   onFileSelected(event) {
     this.selectedFile = event.target.files[0];
   }
@@ -78,8 +49,9 @@ export class ShopComponent implements OnInit {
     fd.append("address", this.f.address.value);
     fd.append("cityId", this.f.city.value);
     fd.append("shopTypeId", this.f.shopType.value);
-    this.getUser().subscribe(user => {
-      fd.append("userId", user[0].id);
+
+    this.mainService.currentUser.subscribe((user: any) => {
+      fd.append("userId", user.id);
       this.mainService.addShop(fd).subscribe(
         data => {
           this.loading = false;
@@ -135,9 +107,5 @@ export class ShopComponent implements OnInit {
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
     this.iconCollapse = this.isCollapsed ? "icon-arrow-down" : "icon-arrow-up";
-  }
-
-  getUser(): Observable<User[]> {
-    return this.store.select(fromUser.getUsers);
   }
 }
