@@ -12,7 +12,19 @@ import { FormsComponent } from "./forms.component";
 import { ShopComponent } from "./shop.component";
 
 // Product Component
-import { ProductComponent } from "./product.component";
+import { ProductComponent } from "./productAdd/product.component";
+
+// Product List Component
+import { ProductDetailComponent } from "./productDetail/productDetail.component";
+
+// Product List Component
+import { CategoryComponent } from "./category/category.component";
+
+// Product Component
+import { ProductListComponent } from "./productList/productList.component";
+
+// Category Component
+import { CategoryListComponent } from "./categoryList/categoryList.component";
 
 import { SwitchesComponent } from "./switches.component";
 import { TablesComponent } from "./tables.component";
@@ -74,9 +86,13 @@ import { ModalModule } from "ngx-bootstrap/modal";
     FormsComponent,
     ShopComponent,
     ProductComponent,
+    ProductListComponent,
+    ProductDetailComponent,
+    CategoryComponent,
     SwitchesComponent,
     TablesComponent,
     TabsComponent,
+    CategoryListComponent,
     CarouselsComponent,
     CollapsesComponent,
     PaginationsComponent,

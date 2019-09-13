@@ -1,0 +1,161 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <!--/.col-->
+    <div class="col-sm-10">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Product List
+          <span
+            *ngIf="loadingTable"
+            class="pull-right spinner-border spinner-border-sm mr-1"
+          ></span>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th>Category</th>
+                <th></th>
+                <th>Detail</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of products">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.weight }}</td>
+                <td>{{ item.Category.name }}</td>
+                <td>
+                  <img
+                    style="height: 60px; width:60px"
+                    class="img-thumbnail"
+                    src="{{
+                      item.defaultImg ? item.defaultImg : 'assets/img/cart.png'
+                    }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-pill btn-sm btn-primary"
+                    data-toggle="modal"
+                    (click)="editButtonClick(item.id)"
+                  >
+                    Details
+                  </button>
+                </td>
+                <td>
+                  <button
+                    (click)="openModal(delete, item.id)"
+                    class="btn btn-pill btn-sm btn-danger"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.row-->
+</div>
+
+<ng-template #delete>
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Delete <strong>{{ product[0].name }}</strong
+          >?
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <p>
+          Are you sure you want to delete <strong>{{ product[0].name }}</strong
+          >?
+        </p>
+
+        <img
+          style="width:80px; height:80px"
+          class="img-thumbnail"
+          src="{{ product[0].defaultImg }}"
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="decline()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirm(product[0].id)"
+        >
+          <span
+            *ngIf="loadingDelete"
+            class="spinner-border spinner-border-sm mr-1"
+          ></span>
+          Yes Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template class="gray modal-lg" #detail>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Just a modal with a bunch of words inside, nothing serious.
+  </div>
+  `
+  <!-- <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Delete <strong>{{ product[0].name }}</strong
+          >?
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <img
+          class="img-thumbnail"
+          style="height:100px; width:100px"
+          *ngFor="let url of urls"
+          [src]="url"
+          height="200"
+        />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="decline()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirm(product[0].id)"
+        >
+          <span
+            *ngIf="loadingDelete"
+            class="spinner-border spinner-border-sm mr-1"
+          ></span>
+          Yes Delete
+        </button>
+      </div>
+    </div>
+  </div> -->
+</ng-template>

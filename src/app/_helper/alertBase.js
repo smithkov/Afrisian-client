@@ -28,5 +28,8 @@ module.exports = {
 
   successCreate: value => {
     return `${value} was successfully created! `;
+  },
+  successUpdate: value => {
+    return `${value} was updated successfully! `;
   }
 };

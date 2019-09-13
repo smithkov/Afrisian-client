@@ -32,16 +32,9 @@ export class MainService {
     return this.currentUserSubject.value;
   }
 
-  // addShop(fd) {
-  //   console.log(fd);
-  //   return this.http.post(`${this.url}/shop`, fd);
-  // }
   addShop(fd) {
     return this.http.post<any>(`${this.url}/shop`, fd).pipe(
       map(shop => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        // localStorage.setItem("currentUser", JSON.stringify(user));
-        //this.currentUserSubject.next(user);
         return shop;
       })
     );
@@ -51,6 +44,22 @@ export class MainService {
     return this.http.post<any>(`${this.url}/item/upload`, fd).pipe(
       map(product => {
         return product;
+      })
+    );
+  }
+
+  addCategory(fd) {
+    return this.http.post<any>(`${this.url}/category/addUpdate`, fd).pipe(
+      map(category => {
+        return category;
+      })
+    );
+  }
+
+  addSubCategory(fd) {
+    return this.http.post<any>(`${this.url}/subCategory/addUpdate`, fd).pipe(
+      map(subCategory => {
+        return subCategory;
       })
     );
   }
@@ -78,6 +87,25 @@ export class MainService {
     );
   }
 
+  getSubCategory(id) {
+    return this.http
+      .post(`${this.url}/subCategory/byCategory`, { categoryId: id })
+      .pipe(
+        map((subCategory: any) => {
+          return subCategory.data;
+        })
+      );
+  }
+
+  getProductById(id: number) {
+    return this.http.get(`${this.url}/item/${id}`).pipe(
+      map((product: any) => {
+        console.log(product);
+        return product.data;
+      })
+    );
+  }
+
   getProductsByShop(shopId: any) {
     return this.http
       .post(`${this.url}/item/itemsByShop`, { shopId: shopId })
@@ -90,6 +118,14 @@ export class MainService {
 
   deleteItem(id: any) {
     return this.http.post(`${this.url}/item/delete`, { itemId: id }).pipe(
+      map((result: any) => {
+        return result.error;
+      })
+    );
+  }
+
+  deleteImage(id: any) {
+    return this.http.post(`${this.url}/image/delete`, { id: id }).pipe(
       map((result: any) => {
         return result.error;
       })

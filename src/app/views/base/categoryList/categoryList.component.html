@@ -1,0 +1,50 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <!--/.col-->
+    <div class="col-sm-10">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Category List
+          <span
+            *ngIf="loadingTable"
+            class="pull-right spinner-border spinner-border-sm mr-1"
+          ></span>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th></th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of categories">
+                <td>{{ item.name }}</td>
+                <td>
+                  <img
+                    style="height: 60px; width:100px"
+                    class="img-thumbnail"
+                    src="{{ item.path ? item.path : 'assets/img/cart.png' }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-pill btn-sm btn-primary"
+                    data-toggle="modal"
+                    (click)="editButtonClick(item.id)"
+                  >
+                    Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/.row-->
+</div>

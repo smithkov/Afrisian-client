@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-8">
       <div *ngIf="msg.show" class="{{ msg.decorator }}" role="alert">
         {{ msg.message }}
         <button
@@ -15,9 +15,27 @@
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
         <div class="card">
           <div class="card-header">
-            <strong>Product Entry</strong>
+            <strong>Product Detail</strong>
             <small>Form</small>
+            <span
+              *ngIf="loadingForm"
+              class="spinner-border spinner-border-sm mr-1 pull-right"
+            ></span>
           </div>
+          <input
+            type="hidden"
+            class="form-control"
+            id="company"
+            placeholder=""
+            formControlName="id"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            id="company"
+            placeholder=""
+            formControlName="defaultImg"
+          />
           <div class="card-body">
             <div class="form-group">
               <label for="name">Product name</label>
@@ -138,121 +156,57 @@
                 />
               </div>
             </div>
+
             <img
               class="img-thumbnail"
               style="height:100px; width:100px"
               *ngFor="let url of urls"
               [src]="url"
               height="200"
-            />
+            /><br />
+            <hr />
+            <button
+              *ngIf="showImageClearButton"
+              (click)="clearImage()"
+              class="btn btn-sm btn-primary"
+            >
+              Reset image
+            </button>
+            <hr />
+            <div *ngFor="let image of itemImages" class="dialog">
+              <button
+                title="delete this image"
+                (click)="deleteImage(image.id)"
+                class="close-thik"
+              ></button>
+              <img
+                style="height: 150px; width: 150px"
+                class="img-thumbnail"
+                [src]="image.path"
+              />
+            </div>
+
             <!--/.row-->
           </div>
+
           <div class="card-footer">
+            <button
+              type="button"
+              (click)="enableForm()"
+              class="btn btn-sm btn-secondary"
+            >
+              <i class="fa fa-edit"></i> {{ buttonCaption }}
+            </button>
             <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Save
               <span
                 *ngIf="loading"
                 class="spinner-border spinner-border-sm mr-1"
               ></span>
-              Submit
-            </button>
-            <button type="reset" class="btn btn-sm btn-danger">
-              <i class="fa fa-ban"></i> Reset
             </button>
           </div>
         </div>
       </form>
     </div>
-    <!--/.col-->
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Product List
-        </div>
-        <div class="card-body">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Weight</th>
-                <th></th>
-                <th>Detail</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngIf="loadingTable">
-                <td>
-                  <span class="spinner-border spinner-border-sm mr-1"></span>
-                </td>
-              </tr>
-              <tr *ngFor="let item of products">
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.weight }}</td>
-                <td>
-                  <img
-                    style="height: 60px; width:60px"
-                    class="img-thumbnail"
-                    src="{{ item.defaultImg }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-pill btn-sm btn-primary"
-                    data-toggle="modal"
-                    (click)="smallModal.show()"
-                  >
-                    Details
-                  </button>
-                </td>
-                <td>
-                  <button
-                    (click)="openModal(template, item.id)"
-                    class="btn btn-pill btn-sm btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
   </div>
-  <!--/.row-->
 </div>
-
-<ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title">
-      Delete <strong>{{ product[0].name }}</strong
-      >?
-    </h4>
-  </div>
-  <div class="modal-body text-center">
-    <p>
-      Are you sure you want to delete <strong>{{ product[0].name }}</strong
-      >?
-    </p>
-
-    <img
-      style="width:80px; height:80px"
-      class="img-thumbnail"
-      src="{{ product[0].defaultImg }}"
-    />
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="decline()">
-      Cancel
-    </button>
-    <button type="button" class="btn btn-danger" (click)="confirm(product[0].id)">
-        <span
-        *ngIf="loadingDelete"
-        class="spinner-border spinner-border-sm mr-1"
-      ></span> Yes Delete
-    </button>
-  </div>
-</ng-template>

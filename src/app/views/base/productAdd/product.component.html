@@ -1,0 +1,177 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-8">
+      <div *ngIf="msg.show" class="{{ msg.decorator }}" role="alert">
+        {{ msg.message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="card">
+          <div class="card-header">
+            <strong>Product Entry</strong>
+            <small>Form</small>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="name">Product name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="Enter your product name"
+                formControlName="name"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['name'].invalid &&
+                  (productForm.controls['name'].dirty ||
+                    productForm.controls['name'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="productForm.controls['name'].errors.required">
+                  Product Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-4">Category</label>
+              <select class="form-control" formControlName="category">
+                <option
+                  *ngFor="let c of category; let i = index"
+                  [value]="category[i].id"
+                >
+                  {{ category[i].name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-8">
+                <label for="street">Weight</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="weight"
+                  placeholder="Enter product weight"
+                  formControlName="weight"
+                />
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['weight'].invalid &&
+                    (productForm.controls['weight'].dirty ||
+                      productForm.controls['weight'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="productForm.controls['weight'].errors.required">
+                    Weight is required.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label for="vat">Price</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="vat"
+                  placeholder="price"
+                  formControlName="price"
+                />
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['price'].invalid &&
+                    (productForm.controls['price'].dirty ||
+                      productForm.controls['price'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="productForm.controls['price'].errors.required">
+                    Price is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="definition">Definition</label>
+              <input
+                type="text"
+                class="form-control"
+                id="definition"
+                placeholder="Enter definition"
+                formControlName="definition"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['definition'].invalid &&
+                  (productForm.controls['definition'].dirty ||
+                    productForm.controls['definition'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="productForm.controls['definition'].errors.required">
+                  Defintion is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="file-input"
+                >Images</label
+              >
+              <div class="col-md-9">
+                <input
+                  type="file"
+                  (change)="onSelectFile($event)"
+                  id="file-input"
+                  name="file-input"
+                />
+              </div>
+            </div>
+            <img
+              class="img-thumbnail"
+              style="height:100px; width:100px; margin:10px;"
+              *ngFor="let url of urls"
+              [src]="url"
+              height="200"
+            />
+            <br />
+            <hr />
+            <button
+              *ngIf="showImageClearButton"
+              (click)="clearImage()"
+              class="btn btn-sm btn-primary"
+            >
+              Reset image
+            </button>
+            <!--/.row-->
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+              <i class="fa fa-save"></i> Submit
+            </button>
+            <button type="reset" class="btn btn-sm btn-danger">
+              <i class="fa fa-ban"></i> Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

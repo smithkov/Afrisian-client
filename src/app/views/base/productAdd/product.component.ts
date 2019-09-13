@@ -1,30 +1,27 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap/modal";
-import { MainService } from "../../_services/main.service";
+import { MainService } from "../../../_services/main.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-var msgObject = require("../../_helper/alertBase");
-var image = require("../../_helper/config");
+var msgObject = require("../../../_helper/alertBase");
+var image = require("../../../_helper/config");
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
-import { Item } from "../../models/item";
+import { Item } from "../../../models/item";
 
 @Component({
   templateUrl: "product.component.html"
 })
 export class ProductComponent implements OnInit {
   modalRef: BsModalRef;
-  @ViewChild("smallModal", { static: false }) public smallModal: ModalDirective;
   productForm: FormGroup;
   category: any = [];
-  product: Item;
   formData = new FormData();
   selectedFile = null;
   loading = false;
-  loadingTable = true;
-  loadingDelete = false;
   submitted = false;
   returnUrl: string;
   shopId: any;
+  showImageClearButton = false;
   urls = [];
   products = [];
   msg: object;
@@ -37,44 +34,9 @@ export class ProductComponent implements OnInit {
     this.msg = msgObject.default;
     mainService.currentShop.subscribe(shop => {
       this.shopId = shop.id;
-      console.log("begining of shop id");
-      console.log(this.shopId);
-    });
-
-    this.loadProducts();
-  }
-  openModal(template: TemplateRef<any>, id: any) {
-    this.product = this.products.filter(product => product.id == id);
-
-    this.modalRef = this.modalService.show(template, { class: "modal-sm" });
-  }
-
-  loadProducts() {
-    this.mainService.getProductsByShop(this.shopId).subscribe(products => {
-      if (!products.error) {
-        let productArray = products.data;
-        productArray.forEach(item => {
-          item.defaultImg = image.getImageItem(item.defaultImg);
-        });
-        this.products = products.data;
-        this.loadingTable = false;
-      }
-    });
-  }
-  confirm(id): void {
-    this.loadingDelete = true;
-    this.mainService.deleteItem(id).subscribe(result => {
-      this.loadingDelete = false;
-      if (!result) {
-        this.modalRef.hide();
-        this.products = this.products.filter(product => product.id != id);
-      }
     });
   }
 
-  decline(): void {
-    this.modalRef.hide();
-  }
   get f() {
     return this.productForm.controls;
   }
@@ -99,12 +61,10 @@ export class ProductComponent implements OnInit {
           this.loading = false;
           if (data.error) this.msg = msgObject.danger(data.msg);
           else {
-            this.loadingTable = true;
-            this.loadProducts();
             this.productForm.reset();
             this.formData = new FormData();
             this.urls = [];
-            this.msg = msgObject.success(msgObject.successCreate("product"));
+            this.msg = msgObject.success(msgObject.successCreate("Product"));
           }
         },
         error => {
@@ -113,7 +73,10 @@ export class ProductComponent implements OnInit {
       );
     });
   }
-
+  clearImage(): void {
+    this.urls = [];
+    this.showImageClearButton = false;
+  }
   isCollapsed: boolean = false;
   iconCollapse: string = "icon-arrow-up";
 
@@ -150,6 +113,7 @@ export class ProductComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       this.formData.append("photos", event.target.files[0]);
+      this.showImageClearButton = true;
       for (let i = 0; i < filesAmount; i++) {
         var reader = new FileReader();
 
