@@ -42,15 +42,15 @@ export class DefaultLayoutComponent implements OnDestroy {
 
     //this is basically loading shop data from the store
     this.mainService.currentUser.subscribe((data: any) => {
-      this.mainService.shopByUser(data.id).subscribe(shop => {
-        if (shop) {
-          this.shopName = shop.name;
-          this.logo = image.getImage(shop.logo);
-        } else {
-          this.shopName = "Default Name";
-          this.logo = "assets/images/grocer.png";
-        }
-      });
+      const shop = data.shop;
+      console.log(shop)
+      if (shop) {
+        this.shopName = shop.name;
+        this.logo = image.getImage(shop.logo);
+      } else {
+        this.shopName = "Default Name";
+        this.logo = "assets/images/grocer.png";
+      }
     });
   }
 

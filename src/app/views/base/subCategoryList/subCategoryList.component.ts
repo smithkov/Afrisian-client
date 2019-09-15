@@ -4,19 +4,17 @@ import { MainService } from "../../../_services/main.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 var msgObject = require("../../../_helper/alertBase");
-import { AuthenticationService } from "../../../_services/authentication.service";
 var image = require("../../../_helper/config");
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { Item } from "../../../models/item";
 
 @Component({
-  templateUrl: "productList.component.html"
+  templateUrl: "subCategoryList.component.html"
 })
-export class ProductListComponent implements OnInit {
+export class SubCategoryListComponent implements OnInit {
   modalRef: BsModalRef;
-  productForm: FormGroup;
-  category: any = [];
-  product: any;
+  categories: any = [];
+  category: any;
   formData = new FormData();
   selectedFile = null;
   loadingTable = true;
@@ -24,63 +22,52 @@ export class ProductListComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   shopId: any;
-  urls = [];
-  products = [];
   msg: object;
   constructor(
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
     private mainService: MainService,
-    private auth: AuthenticationService,
     private router: Router
   ) {
     this.msg = msgObject.default;
-    auth.currentUser.subscribe(user => {
-      this.shopId = user.shop.id;
+    mainService.currentShop.subscribe(shop => {
+      this.shopId = shop.id;
     });
 
-    this.loadProducts();
+    this.loadSubCategory();
   }
   openModal(template: TemplateRef<any>, id: any) {
-    this.product = this.products.filter(product => product.id == id);
+    this.category = this.categories.filter(category => category.id == id);
 
     this.modalRef = this.modalService.show(template, { class: "modal-sm" });
   }
 
-  loadProducts() {
-    this.mainService.getProductsByShop(this.shopId).subscribe(products => {
-      if (!products.error) {
-        let productArray = products.data;
-        productArray.forEach(item => {
-          item.defaultImg = item.defaultImg
-            ? image.getImageItem(item.defaultImg)
-            : null;
-        });
-        this.products = products.data;
-        this.loadingTable = false;
-      }
-    });
-  }
   confirm(id): void {
     this.loadingDelete = true;
-    this.mainService.deleteItem(id).subscribe(result => {
+    this.mainService.deleteSubCategory(id).subscribe(result => {
       this.loadingDelete = false;
       if (!result) {
         this.modalRef.hide();
-        this.products = this.products.filter(product => product.id != id);
+        this.categories = this.categories.filter(category => category.id != id);
       }
     });
   }
-
   decline(): void {
     this.modalRef.hide();
   }
-
-  editButtonClick(productId: number): void {
-    this.router.navigate(["/base/product-Detail", productId]);
+  loadSubCategory() {
+    this.mainService.getSubCategory().subscribe(cat => {
+      let categoryArray = cat;
+      categoryArray.forEach(item => {
+        item.path = item.path ? image.getImage(item.path) : null;
+      });
+      this.categories = cat;
+      this.loadingTable = false;
+    });
   }
-  get f() {
-    return this.productForm.controls;
+
+  editButtonClick(subCategoryId: number): void {
+    this.router.navigate(["/base/sub-category-detail", subCategoryId]);
   }
 
   isCollapsed: boolean = false;

@@ -55,10 +55,8 @@ export class LoginComponent implements OnInit {
           if (!data.auth) {
           }
           this.authenticationService.currentUser.subscribe((data: any) => {
-            console.log("first");
-            console.log(data.shop);
-            console.log("end");
-            this.router.navigate([this.returnUrl]);
+            if (data.shop) this.router.navigate([this.returnUrl]);
+            else this.router.navigate(["/base/shop"]);
           });
         },
         error => {

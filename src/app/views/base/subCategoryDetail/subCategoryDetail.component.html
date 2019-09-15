@@ -1,0 +1,121 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-8">
+      <div *ngIf="msg.show" class="{{ msg.decorator }}" role="alert">
+        {{ msg.message }}
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="pageForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="card">
+          <div class="card-header">
+            <strong>Category Detail</strong>
+            <small>Form</small>
+            <span
+              *ngIf="loadingForm"
+              class="spinner-border spinner-border-sm mr-1 pull-right"
+            ></span>
+          </div>
+          <input type="hidden" formControlName="id" />
+          <input type="hidden" placeholder="" formControlName="path" />
+          <div class="card-body">
+            <div class="form-group">
+              <label class="col-md-4">Category</label>
+              <select class="form-control" formControlName="categoryId">
+                <option
+                  *ngFor="let c of category; let i = index"
+                  [value]="category[i].id"
+                >
+                  {{ category[i].name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="name">Sub Category</label>
+              <input
+                type="text"
+                class="form-control"
+                id="company"
+                placeholder="Enter sub category name"
+                formControlName="name"
+              />
+              <hr />
+              <div
+                *ngIf="
+                  pageForm.controls['name'].invalid &&
+                  (pageForm.controls['name'].dirty ||
+                    pageForm.controls['name'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="pageForm.controls['name'].errors.required">
+                  Sub Category Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="file-input"
+                >Image</label
+              >
+              <div class="col-md-9">
+                <input
+                  type="file"
+                  (change)="onSelectFile($event)"
+                  id="file-input"
+                  name="file-input"
+                />
+              </div>
+            </div>
+
+            <img
+              class="img-thumbnail"
+              style="height:200px; width:300px"
+              *ngIf="url"
+              [src]="url"
+            /><br />
+            <hr />
+            <button
+              *ngIf="url"
+              (click)="clearImage()"
+              class="btn btn-sm btn-primary"
+            >
+              Reset image
+            </button>
+            <hr />
+            <div *ngIf="category.length > 0" class="dialog">
+              <img
+                style="height: 100px; width: 200px"
+                class="img-thumbnail"
+                [src]="path"
+              />
+            </div>
+            <!--/.row-->
+          </div>
+
+          <div class="card-footer">
+            <button
+              type="button"
+              (click)="enableForm()"
+              class="btn btn-sm btn-secondary"
+            >
+              <i class="fa fa-edit"></i> {{ buttonCaption }}
+            </button>
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Save
+              <span
+                *ngIf="loading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

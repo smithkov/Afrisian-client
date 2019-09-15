@@ -3,6 +3,7 @@ import { MainService } from "../../_services/main.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 var msgObject = require("../../_helper/alertBase");
+import { AuthenticationService } from "../../_services/authentication.service";
 import { Observable } from "rxjs/Observable";
 import { Shop } from "../../models/shop";
 
@@ -18,13 +19,18 @@ export class ShopComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  currentUserId: any;
   msg: object;
   constructor(
     private formBuilder: FormBuilder,
     private mainService: MainService,
+    private auth: AuthenticationService,
     private router: Router
   ) {
     this.msg = msgObject.default;
+    this.auth.currentUser.subscribe((user: any) => {
+      this.currentUserId = user.user.id;
+    });
   }
 
   onFileSelected(event) {
@@ -50,25 +56,23 @@ export class ShopComponent implements OnInit {
     fd.append("cityId", this.f.city.value);
     fd.append("shopTypeId", this.f.shopType.value);
 
-    this.mainService.currentUser.subscribe((user: any) => {
-      fd.append("userId", user.id);
-      this.mainService.addShop(fd).subscribe(
-        data => {
-          this.loading = false;
-          if (data.error) this.msg = msgObject.danger(data.msg);
-          else {
-            this.msg = msgObject.success(
-              msgObject.successCreate("Shop") +
-                "you will be taken to the dashboard in 4 seconds"
-            );
-            setTimeout(() => this.router.navigate(["/dashboard"]), 4000);
-          }
-        },
-        error => {
-          this.loading = false;
+    fd.append("userId", this.currentUserId);
+    this.auth.addShop(fd).subscribe(
+      data => {
+        this.loading = false;
+        if (data.error) this.msg = msgObject.danger(data.msg);
+        else {
+          this.msg = msgObject.success(
+            msgObject.successCreate("Shop") +
+              "you will be taken to the dashboard in 4 seconds"
+          );
+          setTimeout(() => this.router.navigate(["/dashboard"]), 4000);
         }
-      );
-    });
+      },
+      error => {
+        this.loading = false;
+      }
+    );
   }
 
   isCollapsed: boolean = false;

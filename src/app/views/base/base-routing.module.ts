@@ -4,11 +4,21 @@ import { Routes, RouterModule } from "@angular/router";
 import { CardsComponent } from "./cards.component";
 import { FormsComponent } from "./forms.component";
 import { ShopComponent } from "./shop.component";
-import { ProductComponent } from "./productAdd/product.component";
+//category component begins
 import { CategoryComponent } from "./category/category.component";
 import { CategoryListComponent } from "./categoryList/categoryList.component";
+import { CategoryDetailComponent } from "./categoryDetail/categoryDetail.component";
+//category component ends
+//sub-category component begins
+import { SubCategoryComponent } from "./subCategory/subCategory.component";
+import { SubCategoryListComponent } from "./subCategoryList/subCategoryList.component";
+import { SubCategoryDetailComponent } from "./subCategoryDetail/subCategoryDetail.component";
+//sub-category component ends
+//product components begins
+import { ProductComponent } from "./productAdd/product.component";
 import { ProductListComponent } from "./productList/productList.component";
 import { ProductDetailComponent } from "./productDetail/productDetail.component";
+//product components ends
 import { SwitchesComponent } from "./switches.component";
 import { TablesComponent } from "./tables.component";
 import { TabsComponent } from "./tabs.component";
@@ -59,10 +69,38 @@ const routes: Routes = [
         }
       },
       {
+        path: "sub-category",
+        component: SubCategoryComponent,
+        data: {
+          title: "Sub Category"
+        }
+      },
+      {
+        path: "sub-category-list",
+        component: SubCategoryListComponent,
+        data: {
+          title: "Sub Category List"
+        }
+      },
+      {
+        path: "sub-category-detail/:id",
+        component: SubCategoryDetailComponent,
+        data: {
+          title: "Sub Category Detail"
+        }
+      },
+      {
         path: "product-Detail/:id",
         component: ProductDetailComponent,
         data: {
           title: "Product Details"
+        }
+      },
+      {
+        path: "category-Detail/:id",
+        component: CategoryDetailComponent,
+        data: {
+          title: "Category Details"
         }
       },
       {

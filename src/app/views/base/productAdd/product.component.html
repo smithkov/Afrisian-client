@@ -17,6 +17,10 @@
           <div class="card-header">
             <strong>Product Entry</strong>
             <small>Form</small>
+            <span
+              *ngIf="loadingForm"
+              class="pull-right spinner-border spinner-border-sm mr-1"
+            ></span>
           </div>
           <div class="card-body">
             <div class="form-group">
@@ -44,7 +48,11 @@
             </div>
             <div class="form-group">
               <label class="col-md-4">Category</label>
-              <select class="form-control" formControlName="category">
+              <select
+                (change)="getSubCategory($event)"
+                class="form-control"
+                formControlName="category"
+              >
                 <option
                   *ngFor="let c of category; let i = index"
                   [value]="category[i].id"
@@ -52,6 +60,46 @@
                   {{ category[i].name }}
                 </option>
               </select>
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['category'].invalid &&
+                  (productForm.controls['category'].dirty ||
+                    productForm.controls['category'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div *ngIf="productForm.controls['name'].errors.required">
+                  Category is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4">Sub Category</label>
+              <select class="form-control" formControlName="subCategory">
+                <option
+                  *ngFor="let c of subCategory; let i = index"
+                  [value]="subCategory[i].id"
+                >
+                  {{ subCategory[i].name }}
+                </option>
+              </select>
+              <hr />
+              <div
+                *ngIf="
+                  productForm.controls['subCategory'].invalid &&
+                  (productForm.controls['subCategory'].dirty ||
+                    productForm.controls['subCategory'].touched)
+                "
+                class="alert alert-danger"
+              >
+                <div
+                  *ngIf="productForm.controls['subCategory'].errors.required"
+                >
+                  Sub Category is required.
+                </div>
+              </div>
             </div>
 
             <div class="row">

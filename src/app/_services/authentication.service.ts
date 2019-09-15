@@ -13,17 +13,17 @@ import { Shops } from "../models/shops";
 @Injectable({ providedIn: "root" })
 export class AuthenticationService {
   url: string = config.development.url;
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
-    this.currentUserSubject = new BehaviorSubject<User>(
+    this.currentUserSubject = new BehaviorSubject<any>(
       JSON.parse(localStorage.getItem("currentUser"))
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): any {
     return this.currentUserSubject.value;
   }
 
@@ -31,10 +31,11 @@ export class AuthenticationService {
     return this.http
       .post<any>(`${this.url}/login`, { email, password, hasShop })
       .pipe(
-        map(user => {
+        map((user: any) => {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem("currentUser", JSON.stringify(user.user));
-          this.currentUserSubject.next(user.user);
+          let userData = { user: user.user, shop: user.shop };
+          localStorage.setItem("currentUser", JSON.stringify(userData));
+          this.currentUserSubject.next(userData);
           return user;
         })
       );
@@ -42,17 +43,29 @@ export class AuthenticationService {
 
   register(user: User) {
     return this.http.post<any>(`${this.url}/register`, user).pipe(
-      map(userData => {
+      map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        console.log(userData.user);
-        localStorage.setItem("currentUser", JSON.stringify(userData.user));
+        let userData = { user: user.user, shop: user.shop };
+        localStorage.setItem("currentUser", JSON.stringify(userData));
 
-        this.currentUserSubject.next(userData.user);
+        this.currentUserSubject.next(userData);
         return userData;
       })
     );
   }
-
+  addShop(fd) {
+    return this.http.post<any>(`${this.url}/shop`, fd).pipe(
+      map(result => {
+        let shop = result.data;
+        this.currentUser.subscribe(user => {
+          let userData = { user: user.user, shop: shop };
+          localStorage.setItem("currentUser", JSON.stringify(userData));
+          this.currentUserSubject.next(userData);
+        });
+        return shop;
+      })
+    );
+  }
   logout() {
     // remove user from local storage and set current user to null
     localStorage.removeItem("currentUser");

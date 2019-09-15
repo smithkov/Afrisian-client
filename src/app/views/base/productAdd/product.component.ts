@@ -15,6 +15,8 @@ export class ProductComponent implements OnInit {
   modalRef: BsModalRef;
   productForm: FormGroup;
   category: any = [];
+  subCategory: any = [];
+  loadingForm: boolean = true;
   formData = new FormData();
   selectedFile = null;
   loading = false;
@@ -51,7 +53,7 @@ export class ProductComponent implements OnInit {
     this.formData.append("price", this.f.price.value);
     this.formData.append("weight", this.f.weight.value);
     this.formData.append("definition", this.f.definition.value);
-    this.formData.append("categoryId", this.f.category.value);
+    this.formData.append("subCategoryId", this.f.subCategory.value);
     this.formData.append("shopId", this.shopId);
 
     this.mainService.currentUser.subscribe((user: any) => {
@@ -73,6 +75,20 @@ export class ProductComponent implements OnInit {
       );
     });
   }
+  getSubCategory(event) {
+    this.loadingForm = true;
+    this.mainService
+      .getSubCategoryByCategory(event.target.value)
+      .subscribe(data => {
+        this.subCategory = data;
+        this.loadingForm = false;
+        if (data.length > 0) {
+          this.productForm.controls.subCategory.patchValue(
+            this.subCategory[0].id
+          );
+        }
+      });
+  }
   clearImage(): void {
     this.urls = [];
     this.showImageClearButton = false;
@@ -93,13 +109,14 @@ export class ProductComponent implements OnInit {
       price: ["", Validators.required],
       weight: ["", Validators.required],
       definition: ["", Validators.required],
-      category: ["", Validators.required]
-      //city: ["", Validators.required]
+      category: ["", Validators.required],
+      subCategory: ["", Validators.required]
     });
 
     //this loads all the cities from the service
     this.mainService.getCategory().subscribe(data => {
       this.category = data;
+      this.loadingForm = false;
       this.productForm.controls.category.patchValue(this.category[0].id);
     });
   }

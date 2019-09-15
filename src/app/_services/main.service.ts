@@ -32,14 +32,6 @@ export class MainService {
     return this.currentUserSubject.value;
   }
 
-  addShop(fd) {
-    return this.http.post<any>(`${this.url}/shop`, fd).pipe(
-      map(shop => {
-        return shop;
-      })
-    );
-  }
-
   addProduct(fd) {
     return this.http.post<any>(`${this.url}/item/upload`, fd).pipe(
       map(product => {
@@ -87,7 +79,7 @@ export class MainService {
     );
   }
 
-  getSubCategory(id) {
+  getSubCategoryByCategory(id) {
     return this.http
       .post(`${this.url}/subCategory/byCategory`, { categoryId: id })
       .pipe(
@@ -97,11 +89,36 @@ export class MainService {
       );
   }
 
+  getSubCategory() {
+    return this.http.get(`${this.url}/subCategory/`).pipe(
+      map((subCategory: any) => {
+        return subCategory.data;
+      })
+    );
+  }
+
   getProductById(id: number) {
     return this.http.get(`${this.url}/item/${id}`).pipe(
       map((product: any) => {
         console.log(product);
         return product.data;
+      })
+    );
+  }
+
+  getCategoryById(id: number) {
+    return this.http.get(`${this.url}/category/${id}`).pipe(
+      map((category: any) => {
+        return category.data;
+      })
+    );
+  }
+
+  getSubCategoryById(id: number) {
+    return this.http.get(`${this.url}/subCategory/${id}`).pipe(
+      map((subCategory: any) => {
+        console.log(subCategory);
+        return subCategory.data;
       })
     );
   }
@@ -118,6 +135,14 @@ export class MainService {
 
   deleteItem(id: any) {
     return this.http.post(`${this.url}/item/delete`, { itemId: id }).pipe(
+      map((result: any) => {
+        return result.error;
+      })
+    );
+  }
+
+  deleteSubCategory(id: any) {
+    return this.http.post(`${this.url}/subCategory/delete`, { id: id }).pipe(
       map((result: any) => {
         return result.error;
       })

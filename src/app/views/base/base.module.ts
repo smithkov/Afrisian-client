@@ -26,6 +26,14 @@ import { ProductListComponent } from "./productList/productList.component";
 // Category Component
 import { CategoryListComponent } from "./categoryList/categoryList.component";
 
+// Category Detail Component
+import { CategoryDetailComponent } from "./categoryDetail/categoryDetail.component";
+
+// Sub-Category Components
+import { SubCategoryComponent } from "./subCategory/subCategory.component";
+import { SubCategoryListComponent } from "./subCategoryList/subCategoryList.component";
+import { SubCategoryDetailComponent } from "./subCategoryDetail/subCategoryDetail.component";
+
 import { SwitchesComponent } from "./switches.component";
 import { TablesComponent } from "./tables.component";
 
@@ -88,7 +96,11 @@ import { ModalModule } from "ngx-bootstrap/modal";
     ProductComponent,
     ProductListComponent,
     ProductDetailComponent,
+    CategoryDetailComponent,
     CategoryComponent,
+    SubCategoryComponent,
+    SubCategoryListComponent,
+    SubCategoryDetailComponent,
     SwitchesComponent,
     TablesComponent,
     TabsComponent,

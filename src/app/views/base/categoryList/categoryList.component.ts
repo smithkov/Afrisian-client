@@ -30,9 +30,6 @@ export class CategoryListComponent implements OnInit {
     private router: Router
   ) {
     this.msg = msgObject.default;
-    mainService.currentShop.subscribe(shop => {
-      this.shopId = shop.id;
-    });
 
     this.loadCategory();
   }
@@ -40,6 +37,7 @@ export class CategoryListComponent implements OnInit {
   loadCategory() {
     this.mainService.getCategory().subscribe(cat => {
       let categoryArray = cat;
+
       categoryArray.forEach(item => {
         item.path = item.path ? image.getImage(item.path) : null;
       });

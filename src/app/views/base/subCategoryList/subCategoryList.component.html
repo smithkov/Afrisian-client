@@ -4,7 +4,7 @@
     <div class="col-sm-10">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Product List
+          <i class="fa fa-align-justify"></i> Category List
           <span
             *ngIf="loadingTable"
             class="pull-right spinner-border spinner-border-sm mr-1"
@@ -14,30 +14,25 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Weight</th>
-                <th>SubCategory</th>
+                <th>Name</th>
+                <th>Category</th>
                 <th></th>
                 <th>Detail</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of products">
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.weight }}</td>
+              <tr *ngFor="let item of categories">
                 <td>
-                  {{ item.SubCategory ? item.SubCategory.name : "Empty" }}
+                  <strong>{{ item.name }}</strong>
+                </td>
+                <td>
+                  <strong>{{ item.Category.name }}</strong>
                 </td>
                 <td>
                   <img
-                    style="height: 60px; width:60px"
+                    style="height: 60px; width:100px"
                     class="img-thumbnail"
-                    src="{{
-                      item.defaultImg ? item.defaultImg : 'assets/img/cart.png'
-                    }}"
+                    src="{{ item.path ? item.path : 'assets/img/cart.png' }}"
                   />
                 </td>
                 <td>
@@ -67,26 +62,26 @@
   </div>
   <!--/.row-->
 </div>
-
 <ng-template #delete>
   <div class="modal-dialog modal-danger" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          Delete <strong>{{ product[0].name }}</strong
+          Delete <strong>{{ category[0].name }}</strong
           >?
         </h4>
       </div>
       <div class="modal-body text-center">
         <p>
-          Are you sure you want to delete <strong>{{ product[0].name }}</strong
+          Are you sure you want to delete
+          <strong>{{ category[0].name }}</strong
           >?
         </p>
 
         <img
           style="width:80px; height:80px"
           class="img-thumbnail"
-          src="{{ product[0].defaultImg }}"
+          src="{{ category[0].path }}"
         />
       </div>
       <div class="modal-footer">
@@ -96,7 +91,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="confirm(product[0].id)"
+          (click)="confirm(category[0].id)"
         >
           <span
             *ngIf="loadingDelete"

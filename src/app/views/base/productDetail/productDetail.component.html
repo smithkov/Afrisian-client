@@ -61,16 +61,60 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="col-md-4">Category</label>
-              <select class="form-control" formControlName="category">
-                <option
-                  *ngFor="let c of category; let i = index"
-                  [value]="category[i].id"
+                <label class="col-md-4">Category</label>
+                <select
+                  (change)="getSubCategory($event)"
+                  class="form-control"
+                  formControlName="category"
                 >
-                  {{ category[i].name }}
-                </option>
-              </select>
-            </div>
+                  <option
+                    *ngFor="let c of category; let i = index"
+                    [value]="category[i].id"
+                  >
+                    {{ category[i].name }}
+                  </option>
+                </select>
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['category'].invalid &&
+                    (productForm.controls['category'].dirty ||
+                      productForm.controls['category'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div *ngIf="productForm.controls['name'].errors.required">
+                    Category is required.
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label class="col-md-4">Sub Category</label>
+                <select class="form-control" formControlName="subCategory">
+                  <option
+                    *ngFor="let c of subCategory; let i = index"
+                    [value]="subCategory[i].id"
+                  >
+                    {{ subCategory[i].name }}
+                  </option>
+                </select>
+                <hr />
+                <div
+                  *ngIf="
+                    productForm.controls['subCategory'].invalid &&
+                    (productForm.controls['subCategory'].dirty ||
+                      productForm.controls['subCategory'].touched)
+                  "
+                  class="alert alert-danger"
+                >
+                  <div
+                    *ngIf="productForm.controls['subCategory'].errors.required"
+                  >
+                    Sub Category is required.
+                  </div>
+                </div>
+              </div>
 
             <div class="row">
               <div class="form-group col-sm-8">

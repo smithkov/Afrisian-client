@@ -22,6 +22,7 @@ export class ProductDetailComponent implements OnInit {
   loadingForm = true;
   isEnableEdit = false;
   buttonCaption = "Edit Product";
+  subCategory: any = [];
   submitted = false;
   returnUrl: string;
   showImageClearButton = false;
@@ -55,7 +56,7 @@ export class ProductDetailComponent implements OnInit {
     this.formData.append("price", this.f.price.value);
     this.formData.append("weight", this.f.weight.value);
     this.formData.append("definition", this.f.definition.value);
-    this.formData.append("categoryId", this.f.category.value);
+    this.formData.append("subCategoryId", this.f.subCategory.value);
     this.formData.append("defaultImg", this.f.defaultImg.value);
     this.formData.append("shopId", this.shopId);
     this.formData.append("id", this.f.id.value);
@@ -90,6 +91,7 @@ export class ProductDetailComponent implements OnInit {
       weight: ["", Validators.required],
       definition: ["", Validators.required],
       category: ["", Validators.required],
+      subCategory: ["", Validators.required],
       id: ["", Validators.required],
       isUpdate: [true, Validators.required],
       defaultImg: ["", Validators.required]
@@ -102,13 +104,15 @@ export class ProductDetailComponent implements OnInit {
       }
     });
     //this loads all the cities from the service
-    this.mainService.getCategory().subscribe(data => {
-      this.category = data;
-      //this.productForm.controls.category.patchValue(this.category[0].id);
-    });
+
     this.productForm.disable();
   }
-
+  loadCategory(id) {
+    this.mainService.getCategory().subscribe(data => {
+      this.category = data;
+      this.productForm.controls.category.patchValue(id);
+    });
+  }
   getProductById(id: number) {
     this.mainService.getProductById(id).subscribe((data: any) => {
       this.loadingForm = false;
@@ -140,10 +144,19 @@ export class ProductDetailComponent implements OnInit {
       price: product.price,
       weight: product.weight,
       definition: product.definition,
-      category: product.CategoryId,
+      category: product.category,
+      subCategory: product.SubCategoryId,
       id: product.id,
       defaultImg: product.defaultImg
     });
+    const categoryId = product.SubCategory ? product.SubCategory.CategoryId : 1;
+    this.mainService.getSubCategoryByCategory(categoryId).subscribe(data => {
+      this.subCategory = data;
+      console.log(data);
+      this.productForm.controls.subCategory.patchValue(product.SubCategoryId);
+    });
+
+    this.loadCategory(categoryId);
   }
   deleteImage(id: number) {
     if (id) {
@@ -152,6 +165,20 @@ export class ProductDetailComponent implements OnInit {
           this.itemImages = this.itemImages.filter(image => image.id != id);
       });
     }
+  }
+  getSubCategory(event) {
+    this.loadingForm = true;
+    this.mainService
+      .getSubCategoryByCategory(event.target.value)
+      .subscribe(data => {
+        this.subCategory = data;
+        this.loadingForm = false;
+        if (data.length > 0) {
+          this.productForm.controls.subCategory.patchValue(
+            this.subCategory[0].id
+          );
+        }
+      });
   }
   toggleCollapse(): void {
     this.isCollapsed = !this.isCollapsed;
