@@ -20,7 +20,7 @@ export class ShopComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   currentUserId: any;
-  msg: object;
+  msg: any;
   constructor(
     private formBuilder: FormBuilder,
     private mainService: MainService,

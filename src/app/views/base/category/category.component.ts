@@ -24,7 +24,7 @@ export class CategoryComponent implements OnInit {
   shopId: any;
   showImageClearButton = false;
   url: any;
-  msg: object;
+  msg: any;
   constructor(
     private modalService: BsModalService,
     auth: AuthenticationService,

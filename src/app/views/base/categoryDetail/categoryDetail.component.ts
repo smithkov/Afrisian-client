@@ -24,7 +24,7 @@ export class CategoryDetailComponent implements OnInit {
   path: any;
   shopId: any;
   url: any;
-  msg: object;
+  msg: any;
   constructor(
     private formBuilder: FormBuilder,
     private mainService: MainService,

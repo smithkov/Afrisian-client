@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
   msgDisplay: object;
-  msg: object;
+  msg: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,15 +25,6 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {
     this.msg = msgObject.default;
-    // this.msg = {
-    //   show: true,
-    //   message: "yeah",
-    //   decorator: "alert alert-success"
-    // };
-    // this.msg = new AlertFactory();
-    // this.msgDisplay = this.msg.getSuccess("hwhhwh");
-    // console.log(this.msg.getSuccess("hwhhwh"));
-    // AlertFactory.
   }
 
   ngOnInit() {

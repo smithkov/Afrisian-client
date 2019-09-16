@@ -29,7 +29,7 @@ export class ProductDetailComponent implements OnInit {
   shopId: any;
   urls = [];
   products = [];
-  msg: object;
+  msg: any;
   constructor(
     private formBuilder: FormBuilder,
     private mainService: MainService,

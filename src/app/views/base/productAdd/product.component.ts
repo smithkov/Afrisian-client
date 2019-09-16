@@ -26,7 +26,7 @@ export class ProductComponent implements OnInit {
   showImageClearButton = false;
   urls = [];
   products = [];
-  msg: object;
+  msg: any;
   constructor(
     private modalService: BsModalService,
     private formBuilder: FormBuilder,

@@ -1,38 +1,43 @@
 {
   "name": "@coreui/coreui-free-angular-admin-template",
   "version": "2.5.2",
-  "description": "CoreUI Free Angular 2+ Admin Template",
+  "description": "Afrisian web-app",
   "author": {
-    "name": "Łukasz Holeczek",
-    "url": "http://holeczek.pl",
-    "github": "https://github.com/mrholek",
-    "twitter": "https://twitter.com/lukaszholeczek"
+    "name": "Nnamdi Nwosu",
+    "url": "",
+    "github": "",
+    "twitter": ""
   },
   "contributors": [
     {
-      "name": "Andrzej Kopański",
-      "url": "https://github.com/xidedix"
+      "name": "Nnamdi Nwosu",
+      "url": ""
     }
   ],
   "homepage": "https://coreui.io/angular",
-  "copyright": "Copyright 2019 creativeLabs Łukasz Holeczek",
+  "copyright": "",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build --prod --aot --buildOptimizer --commonChunk --vendorChunk --optimization --progress",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "preinstall": "",
+    "postinstall": ""
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^8.0.2",
+    "@angular/cli": "^8.0.3",
     "@angular/common": "^8.0.2",
     "@angular/compiler": "^8.0.2",
+    "@angular/compiler-cli": "^8.0.2",
     "@angular/core": "^8.0.2",
     "@angular/forms": "^8.0.2",
     "@angular/http": "^8.0.0-beta.10",
+    "@angular/material": "5.0.0-rc.3",
     "@angular/platform-browser": "^8.0.2",
     "@angular/platform-browser-dynamic": "^8.0.2",
     "@angular/router": "^8.0.2",
@@ -41,10 +46,11 @@
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.3.1",
     "@coreui/icons": "0.3.0",
     "@ngrx/store": "^8.3.0",
+    "@ngrx/store-devtools": "^6.0.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
-    "@angular/material": "5.0.0-rc.3",
     "core-js": "^2.6.9",
+    "express": "^4.17.1",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
@@ -56,16 +62,14 @@
     "rxjs-compat": "^6.5.2",
     "simple-line-icons": "^2.4.1",
     "ts-helpers": "^1.1.2",
-    "@ngrx/store-devtools": "^6.0.0",
     "tsickle": "^0.35.0",
     "tslib": "^1.10.0",
+    "typescript": "~3.4.5",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.800.3",
-    "@angular/cli": "^8.0.3",
-    "@angular/compiler-cli": "^8.0.2",
     "@angular/language-service": "^8.0.2",
     "@types/jasmine": "^3.3.13",
     "@types/jasminewd2": "^2.0.6",
@@ -80,8 +84,7 @@
     "karma-jasmine-html-reporter": "^1.4.2",
     "protractor": "^5.4.2",
     "ts-node": "^8.3.0",
-    "tslint": "^5.17.0",
-    "typescript": "~3.4.5"
+    "tslint": "^5.17.0"
   },
   "engines": {
     "node": ">= 12",
